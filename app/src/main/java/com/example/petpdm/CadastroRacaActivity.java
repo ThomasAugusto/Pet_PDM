@@ -25,7 +25,7 @@ public class CadastroRacaActivity extends AppCompatActivity {
         listaRaca = (List<String>) getIntent().
                 getSerializableExtra("lista_raca");
     }
-    public void salvarRaca(View view){
+    public void cadastrarRaca(View view){
         EditText raca = findViewById(R.id.editTextNomeRaca);
         String racaString = raca.getText().toString();
 

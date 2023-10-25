@@ -33,29 +33,23 @@ public class MainActivity extends AppCompatActivity {
         Button botaoLogin = findViewById(R.id.buttonLogar);
         EditText senha = findViewById(R.id.editTextSenha);
 
+        String loginString = login.getText().toString();
+        String senhaString = senha.getText().toString();
+
         boolean encontrou = false;
 
         for(Login l : listaLogin){
-            if (l.login.equals(login) && l.senha.equals(senha)){
+            if (l.getLogin().equals(loginString) && l.getSenha().equals(senhaString)){
                 encontrou = true;
                 break;
             }
         }
 
-        // exemplo para exercicio E2
-        // List<Login> listalogin2 = new ArrayList<>();
-        // for(Login l: listalogin2){
-        //    if(l.login.equals(login.getText().toString()) &&
-        //        l.senha.equals(senha.getText().toString())){
-        //
-        //    }
-        // }
 
         if (encontrou) {
             // abrindo uma nova activity
             Bundle bundle = new Bundle();
             bundle.putString("login", login.getText().toString());
-            bundle.putInt("idade", 100);
 
             Intent intent = new Intent(this, DashboardActivity.class);
             intent.putExtras(bundle);

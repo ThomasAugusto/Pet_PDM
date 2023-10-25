@@ -52,6 +52,9 @@ public class DashboardActivity extends AppCompatActivity {
 
         if (requestCode == 1 && resultCode == 2) {// cadastro pet e retorna a lista de pet
             listaPet = (List<Pet>) data.getSerializableExtra("Lista_pet");
+        if (requestCode == 2 && resultCode == 1) {// cadastro raca e retorna a lista de raca
+            listaRaca = (List<String>) data.getSerializableExtra("Lista_raca");
+            }
         }
     }
 
@@ -65,12 +68,11 @@ public class DashboardActivity extends AppCompatActivity {
 
     }
     public void abrirCadastroRaca(View view) {
-        Intent intentCadastroRaca = new Intent(this,
+        Intent intentAbriCadastroRaca = new Intent(this,
                 CadastroRacaActivity.class);
 
-        intentCadastroRaca.putExtra("lista_raca", (ArrayList<String>) this.listaRaca);
-        startActivityForResult(intentCadastroRaca,2);
-
-
+        intentAbriCadastroRaca.putExtra("lista_raca", (ArrayList<String>) this.listaRaca);
+        startActivityForResult(intentAbriCadastroRaca, 2);
     }
+
 }

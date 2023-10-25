@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.UserHandle;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -30,7 +31,8 @@ public class CadastroUserActivity extends AppCompatActivity {
     }
 
     // criar funcao para pegar os daods da tela e salvar na lista e chamar metodo setResult com o finish.
-    public void CadastrarUsuario(){
+
+    public void CadastrarUsuario(View view) {
         EditText login = findViewById(R.id.editTextNewUser);
         EditText senha = findViewById(R.id.editTextNewPassword);
         EditText repetiSenha = findViewById(R.id.editTextRepetiSenha);
@@ -45,21 +47,21 @@ public class CadastroUserActivity extends AppCompatActivity {
                     .show();
             return;
         }
-        if(!loginString.equals(repetiSenhaString)){
+        if(!senhaString.equals(repetiSenhaString)){
             Toast.makeText(this,"Favor digitar senhas iguais",
                             Toast.LENGTH_LONG)
                     .show();
             return;
         }
-        if(senhaString.length() <= 4){
+        if(senhaString.length() <= 3){
             Toast.makeText(this,"A senha deve ter no mínimo quatro dígitos!",
                             Toast.LENGTH_LONG)
                     .show();
             return;
         }
         Login usuario = new Login();
-        usuario.login = loginString;
-        usuario.senha = senhaString;
+        usuario.setLogin(loginString);
+        usuario.setSenha(senhaString);
 
         listaLogin.add(usuario);
         Toast.makeText(this,"sucesso no cadastro do usuario",
@@ -70,8 +72,8 @@ public class CadastroUserActivity extends AppCompatActivity {
         repetiSenha.setText("");
 
         for(Login user : listaLogin) {
-            Log.d("USER", user.login);
-            Log.d("USER", user.senha + "");
+            Log.d("USER", user.getLogin());
+            Log.d("USER", user.getSenha() + "");
             Log.d("USER", "---------------");
         }
 
@@ -82,6 +84,4 @@ public class CadastroUserActivity extends AppCompatActivity {
         setResult(2,retorno);
         finish(); //fecha minha activity
     }
-
-
 }
