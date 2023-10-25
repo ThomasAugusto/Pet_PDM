@@ -6,7 +6,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
 import java.io.Serializable;
@@ -16,6 +19,7 @@ import java.util.List;
 public class CadastroPetActivity extends AppCompatActivity {
 
     List<Pet> listaPet;
+    List<String> listaRaca;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +29,8 @@ public class CadastroPetActivity extends AppCompatActivity {
 
         listaPet = (List<Pet>) getIntent().
         getSerializableExtra("lista_pet");
+        listaRaca = (List<String>) getIntent().
+                getSerializableExtra("lista_raca");
 
 
     }
@@ -33,6 +39,12 @@ public class CadastroPetActivity extends AppCompatActivity {
 
         EditText nome = findViewById(R.id.editTextNomeDog);
         EditText peso = findViewById(R.id.editTextPesoDog);
+        Spinner spinnerRaca = (Spinner) findViewById(R.id.spinnerRacas);
+
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,listaRaca);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinnerRaca.setAdapter(dataAdapter);
 
         String nomeString = nome.getText().toString();
         String pesoString = peso.getText().toString();
@@ -51,8 +63,8 @@ public class CadastroPetActivity extends AppCompatActivity {
         }
 
         Pet pet = new Pet();
-        pet.nome = nomeString;
-        pet.peso = Double.parseDouble(pesoString);
+        pet.setNome(nomeString);
+        pet.setPeso(Double.parseDouble(pesoString));
 
         listaPet.add(pet);
         Toast.makeText(this,"sucesso no cadastro do pet",
@@ -63,8 +75,8 @@ public class CadastroPetActivity extends AppCompatActivity {
 
 
         for(Pet cachorro : listaPet) {
-            Log.d("PET", cachorro.nome);
-            Log.d("PET", cachorro.peso + "");
+            Log.d("PET", cachorro.getNome());
+            Log.d("PET", cachorro.getPeso() + "");
             Log.d("PET", "---------------");
         }
 

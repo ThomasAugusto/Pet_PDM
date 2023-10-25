@@ -46,7 +46,7 @@ public class CadastroRacaActivity extends AppCompatActivity {
         bundle.putSerializable("lista_raca", (Serializable) listaRaca);
         Intent retorno = new Intent();
         retorno.putExtras(bundle);
-        setResult(2,retorno);
+        setResult(1,retorno);
         finish(); //fecha minha activity
     }
 }

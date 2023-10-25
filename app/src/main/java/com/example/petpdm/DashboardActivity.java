@@ -42,7 +42,8 @@ public class DashboardActivity extends AppCompatActivity {
         Intent intentAbriCadastro = new Intent(this,
                             CadastroPetActivity.class);
 
-        intentAbriCadastro.putExtra("lista_pet", (ArrayList<Pet>) this.listaPet);
+        intentAbriCadastro.putExtra("Lista_pet", (ArrayList<Pet>) this.listaPet);
+        intentAbriCadastro.putExtra("Lista_raca", (ArrayList<String>) this.listaRaca);
         startActivityForResult(intentAbriCadastro,1);
     }
 

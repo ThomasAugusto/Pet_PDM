@@ -28,12 +28,12 @@ public class ListagemPetActivity extends AppCompatActivity {
         for(Pet cachorro : listaPet){
             mensagem
                     .append("Nome: ")
-                    .append(cachorro.nome)
+                    .append(cachorro.getNome())
                     .append("\n");
 
             mensagem
                     .append("Peso: ")
-                    .append(cachorro.peso)
+                    .append(cachorro.getPeso())
                     .append("\n");
             mensagem.append("*********\n");
         }
