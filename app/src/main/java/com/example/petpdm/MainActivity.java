@@ -18,12 +18,13 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     List<Login> listaLogin = new ArrayList<>();
-
+    BancoDeDadosPet BancoDeDadosPet;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setTitle("Login");
+        BancoDeDadosPet = new BancoDeDadosPet(this);
     }
 
     public void mostrarMenu(View view) {
