@@ -20,18 +20,30 @@ public class CadastroPetActivity extends AppCompatActivity {
 
     List<Pet> listaPet;
     List<String> listaRaca;
+    BancoDeDadosPet bancoDeDadosPet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro_pet);
         setTitle("Cadastro Pet");
+        bancoDeDadosPet = new BancoDeDadosPet(this);
 
         listaPet = (List<Pet>) getIntent().
         getSerializableExtra("lista_pet");
         listaRaca = (List<String>) getIntent().
                 getSerializableExtra("lista_raca");
 
+        Spinner spinner = findViewById(R.id.spinnerRacas);
+
+        ArrayAdapter aa =
+                new ArrayAdapter(this,
+                        android.R.layout.simple_spinner_item,
+                        listaRaca);
+
+        aa.setDropDownViewResource(
+                android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(aa);
 
     }
 
@@ -41,13 +53,9 @@ public class CadastroPetActivity extends AppCompatActivity {
         EditText peso = findViewById(R.id.editTextPesoDog);
         Spinner spinnerRaca = (Spinner) findViewById(R.id.spinnerRacas);
 
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,listaRaca);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        spinnerRaca.setAdapter(dataAdapter);
-
         String nomeString = nome.getText().toString();
         String pesoString = peso.getText().toString();
+        String raca = (String) spinnerRaca.getSelectedItem();
 
         if(nomeString.equals("") || pesoString.equals("")){
             Toast.makeText(this,"favor digitar algum valor",
@@ -65,8 +73,10 @@ public class CadastroPetActivity extends AppCompatActivity {
         Pet pet = new Pet();
         pet.setNome(nomeString);
         pet.setPeso(Double.parseDouble(pesoString));
+        pet.setRaca(raca);
 
-        listaPet.add(pet);
+        /*listaPet.add(pet);*/
+        bancoDeDadosPet.adicionarPet(pet);
         Toast.makeText(this,"sucesso no cadastro do pet",
                         Toast.LENGTH_LONG)
                 .show();

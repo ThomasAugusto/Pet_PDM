@@ -4,20 +4,19 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.UserHandle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 public class CadastroUserActivity extends AppCompatActivity {
 
 
     List<Login> listaLogin;
+    DB_Users DBUsers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,47 +32,51 @@ public class CadastroUserActivity extends AppCompatActivity {
     // criar funcao para pegar os daods da tela e salvar na lista e chamar metodo setResult com o finish.
 
     public void CadastrarUsuario(View view) {
-        EditText login = findViewById(R.id.editTextNewUser);
-        EditText senha = findViewById(R.id.editTextNewPassword);
-        EditText repetiSenha = findViewById(R.id.editTextRepetiSenha);
+        EditText username = findViewById(R.id.editTextNewUser);
+        EditText password = findViewById(R.id.editTextNewPassword);
+        EditText repassword = findViewById(R.id.editTextRepetiSenha);
+        DBUsers = new DB_Users(this);
 
-        String loginString = login.getText().toString();
-        String senhaString = senha.getText().toString();
-        String repetiSenhaString = repetiSenha.getText().toString();
+        String user = username.getText().toString();
+        String pass = password.getText().toString();
+        String repass = repassword.getText().toString();
 
-        if(loginString.equals("") || senhaString.equals("")){
-            Toast.makeText(this,"favor digitar algum valor",
-                            Toast.LENGTH_LONG)
-                    .show();
+        if(user.length() <= 0 || password.length() <= 0 || repassword.length() <= 0){
+            Toast.makeText(this,"favor digitar algum valor",Toast.LENGTH_LONG).show();
             return;
         }
-        if(!senhaString.equals(repetiSenhaString)){
-            Toast.makeText(this,"Favor digitar senhas iguais",
-                            Toast.LENGTH_LONG)
-                    .show();
+        if(!pass.equals(repass)){
+            Toast.makeText(this,"Favor digitar senhas iguais",Toast.LENGTH_LONG).show();
             return;
         }
-        if(senhaString.length() <= 3){
-            Toast.makeText(this,"A senha deve ter no mínimo quatro dígitos!",
-                            Toast.LENGTH_LONG)
-                    .show();
+        if(pass.length() <= 3){
+            Toast.makeText(this,"A senha deve ter no mínimo quatro dígitos!",Toast.LENGTH_LONG).show();
             return;
         }
+        Boolean checkuser = DBUsers.checkusername(user);
+        if(checkuser){
+            Toast.makeText(this,"nome de usuário ja existe!",Toast.LENGTH_LONG).show();
+            return;
+        }
+        Boolean insert = DBUsers.insertData(user,pass);
+        if(insert==false){
+            Toast.makeText(this,"falha no cadastro!",Toast.LENGTH_LONG).show();
+            return;
+        }
+
         Login usuario = new Login();
-        usuario.setLogin(loginString);
-        usuario.setSenha(senhaString);
+        usuario.setLogin(user);
+        usuario.setSenha(pass);
 
         listaLogin.add(usuario);
-        Toast.makeText(this,"sucesso no cadastro do usuario",
-                        Toast.LENGTH_LONG)
-                .show();
-        login.setText("");
-        senha.setText("");
-        repetiSenha.setText("");
+        Toast.makeText(this,"sucesso no cadastro do usuario",Toast.LENGTH_LONG).show();
+        username.setText("");
+        password.setText("");
+        repassword.setText("");
 
-        for(Login user : listaLogin) {
-            Log.d("USER", user.getLogin());
-            Log.d("USER", user.getSenha() + "");
+        for(Login us : listaLogin) {
+            Log.d("USER", us.getLogin());
+            Log.d("USER", us.getSenha() + "");
             Log.d("USER", "---------------");
         }
 

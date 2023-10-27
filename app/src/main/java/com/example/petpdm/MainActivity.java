@@ -12,19 +12,19 @@ import android.widget.Toast;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     List<Login> listaLogin = new ArrayList<>();
-    BancoDeDadosPet BancoDeDadosPet;
+    DB_Users DBUsers;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setTitle("Login");
-        BancoDeDadosPet = new BancoDeDadosPet(this);
+        DBUsers = new DB_Users(this);
+        listaLogin = new  ArrayList<>();
     }
 
     public void mostrarMenu(View view) {
@@ -37,15 +37,7 @@ public class MainActivity extends AppCompatActivity {
         String loginString = login.getText().toString();
         String senhaString = senha.getText().toString();
 
-        boolean encontrou = false;
-
-        for(Login l : listaLogin){
-            if (l.getLogin().equals(loginString) && l.getSenha().equals(senhaString)){
-                encontrou = true;
-                break;
-            }
-        }
-
+        boolean encontrou = DBUsers.checkpassword(loginString,senhaString);
 
         if (encontrou) {
             // abrindo uma nova activity
@@ -57,8 +49,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
 
         } else {
-            Toast.makeText(this, "Errou o usuário ou senha",
-                    Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Errou o usuário ou senha",Toast.LENGTH_LONG).show();
         }
 
     }
