@@ -2,6 +2,7 @@ package com.example.petpdm;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -28,20 +29,35 @@ public class DB_Racas extends SQLiteOpenHelper {
     MyDB.execSQL("drop table if exists racas");
     onCreate(MyDB);
     }
-    public Boolean insertData(String raca) {
-        SQLiteDatabase MyDB = this.getWritableDatabase();//acessa DB para escrever
+
+    public void addRacas(Pet pet){
         ContentValues contentValues = new ContentValues();
-        contentValues.put("raca", raca);
-        long result = MyDB.insert("racas", null, contentValues);
-        if (result == -1) {
-            return false;
-        } else {
-            return true;
-        }
+        contentValues.put("raca",pet.getRaca());
+        sqLiteDatabase = this.getWritableDatabase();
+        sqLiteDatabase.insert("racas",null,contentValues);
     }
-    public List<String> getracaslist(){
+    public List<Pet> getracaslist(){
         String sql = "select * from racas";//selecina tudo na tabela racas
         sqLiteDatabase = this.getReadableDatabase();//lê o DB
-        List<String> storeRacas = new ArrayList<>();
+        List<Pet> storeRacas = new ArrayList<>();//cria uma lista para armazenar a informação
+        Cursor cursor = sqLiteDatabase.rawQuery(sql,null);//cria ponteiro
+        if (cursor.moveToFirst()){//posiciona o ponteiro
+            do {
+                String raca = cursor.getString(0);
+                storeRacas.add(new Pet(raca));
+            }while (cursor.moveToNext());
+        }
+        cursor.close();
+        return storeRacas;//retorna lista que pegou no DB
+    }
+    public void updateRacas(Pet pet){
+        sqLiteDatabase = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("raca",pet.getRaca());
+        sqLiteDatabase.update("racas", contentValues,"raca = ?" ,new String[]{String.valueOf(pet.getRaca())});
+    }
+    public void deleteRacas(String raca){
+        sqLiteDatabase =this.getWritableDatabase();
+        sqLiteDatabase.delete("racas","raca = ?",new String[]{String.valueOf(raca)});
     }
 }

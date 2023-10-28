@@ -8,6 +8,16 @@ public class Pet implements Serializable {
     private Double peso;
     private String raca;
 
+    public Pet() {
+        this.nome = nome;
+        this.peso = peso;
+        this.raca = raca;
+    }
+
+    public Pet(String raca) {
+        this.raca = raca;
+    }
+
     public String getNome() {
         return nome;
     }

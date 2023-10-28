@@ -7,6 +7,11 @@ public class Login implements Serializable {
     private String login;
     private String senha;
 
+    public Login() {
+        this.login = login;
+        this.senha = senha;
+    }
+
     public String getLogin() {
         return login;
     }
