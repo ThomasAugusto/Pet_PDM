@@ -13,51 +13,39 @@ import java.util.List;
 
 public class DB_Racas extends SQLiteOpenHelper {
 
-    private SQLiteDatabase sqLiteDatabase;
 
     public DB_Racas(Context context) {
-        super(context, "RACAS_DB", null, 1);
+        super(context, "DB_RACAS", null, 1);
     }
 
     @Override
     public void onCreate(SQLiteDatabase MyDB) {
-    MyDB.execSQL("create table racas( raca TEXT primary key)");
+        MyDB.execSQL("create table racas(raca TEXT primary key)");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase MyDB, int i, int i1) {
-    MyDB.execSQL("drop table if exists racas");
-    onCreate(MyDB);
+        MyDB.execSQL("drop table if exists racas");//cancela a criação se a tabela já existe
+        onCreate(MyDB);
     }
-
-    public void addRacas(Pet pet){
+    public Boolean insertData(String racas) {
+        SQLiteDatabase MyDB = this.getWritableDatabase();//acessa DB para escrever
         ContentValues contentValues = new ContentValues();
-        contentValues.put("raca",pet.getRaca());
-        sqLiteDatabase = this.getWritableDatabase();
-        sqLiteDatabase.insert("racas",null,contentValues);
-    }
-    public List<Pet> getracaslist(){
-        String sql = "select * from racas";//selecina tudo na tabela racas
-        sqLiteDatabase = this.getReadableDatabase();//lê o DB
-        List<Pet> storeRacas = new ArrayList<>();//cria uma lista para armazenar a informação
-        Cursor cursor = sqLiteDatabase.rawQuery(sql,null);//cria ponteiro
-        if (cursor.moveToFirst()){//posiciona o ponteiro
-            do {
-                String raca = cursor.getString(0);
-                storeRacas.add(new Pet(raca));
-            }while (cursor.moveToNext());
+        contentValues.put("raca", racas);
+        long result = MyDB.insert("racas", null, contentValues);
+        if (result == -1) {
+            return false;
+        } else {
+            return true;
         }
-        cursor.close();
-        return storeRacas;//retorna lista que pegou no DB
     }
-    public void updateRacas(Pet pet){
-        sqLiteDatabase = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("raca",pet.getRaca());
-        sqLiteDatabase.update("racas", contentValues,"raca = ?" ,new String[]{String.valueOf(pet.getRaca())});
-    }
-    public void deleteRacas(String raca){
-        sqLiteDatabase =this.getWritableDatabase();
-        sqLiteDatabase.delete("racas","raca = ?",new String[]{String.valueOf(raca)});
+    public Boolean checkracas(String racas){//procura no DB usuário se ele existe e retorna verdadeiro caso exista
+        SQLiteDatabase MyDB = this.getReadableDatabase();//permissão somente para ler
+        Cursor cursor = MyDB.rawQuery("select * from racas where raca = ?",new String[]{racas});
+        if (cursor.getCount()>0){//retorna verdadeiro quando o cursor encontra o item
+            return true;
+        }else {
+            return false;
+        }
     }
 }
