@@ -16,7 +16,7 @@ public class ListagemPetActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_listagem_raca);
+        setContentView(R.layout.activity_listagem_pet);
 
         db_pets = new DB_Pets(this);
         listaPets = db_pets.getPetList();
