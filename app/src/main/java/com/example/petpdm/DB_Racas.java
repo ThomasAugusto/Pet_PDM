@@ -28,6 +28,7 @@ public class DB_Racas extends SQLiteOpenHelper {
         MyDB.execSQL("drop table if exists racas");//cancela a criação se a tabela já existe
         onCreate(MyDB);
     }
+
     public Boolean insertData(String racas) {
         SQLiteDatabase MyDB = this.getWritableDatabase();//acessa DB para escrever
         ContentValues contentValues = new ContentValues();
@@ -39,13 +40,29 @@ public class DB_Racas extends SQLiteOpenHelper {
             return true;
         }
     }
-    public Boolean checkracas(String racas){//procura no DB usuário se ele existe e retorna verdadeiro caso exista
+
+    public Boolean checkracas(String racas) {//procura no DB usuário se ele existe e retorna verdadeiro caso exista
         SQLiteDatabase MyDB = this.getReadableDatabase();//permissão somente para ler
-        Cursor cursor = MyDB.rawQuery("select * from racas where raca = ?",new String[]{racas});
-        if (cursor.getCount()>0){//retorna verdadeiro quando o cursor encontra o item
+        Cursor cursor = MyDB.rawQuery("select * from racas where raca = ?", new String[]{racas});
+        if (cursor.getCount() > 0) {//retorna verdadeiro quando o cursor encontra o item
             return true;
-        }else {
+        } else {
             return false;
         }
+    }
+
+    public List<Pet> getRacaList() {
+        String sql = "select * from racas";
+        SQLiteDatabase MyDB = this.getReadableDatabase();
+        List<Pet> storeRacas = new ArrayList<>();
+        Cursor cursor = MyDB.rawQuery(sql, null);
+        if (cursor.moveToFirst()) {
+            do {
+                String raca = cursor.getString(0);
+                storeRacas.add(new Pet(raca));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return storeRacas;
     }
 }

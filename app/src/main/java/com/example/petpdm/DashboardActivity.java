@@ -75,5 +75,8 @@ public class DashboardActivity extends AppCompatActivity {
         intentAbriCadastroRaca.putExtra("lista_raca", (ArrayList<String>) this.listaRaca);
         startActivityForResult(intentAbriCadastroRaca, 2);
     }
-
+    public  void abrir_listaraca(View view){
+        Intent intentlistraca = new Intent(this,ListagemRacaActivity.class);
+        startActivity(intentlistraca);
+    }
 }

@@ -2,9 +2,9 @@ package com.example.petpdm;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -14,7 +14,7 @@ import java.util.List;
 
 public class CadastroRacaActivity extends AppCompatActivity {
 
-    List<String> listaRaca;
+    List<Pet> listaRaca;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +22,7 @@ public class CadastroRacaActivity extends AppCompatActivity {
         setContentView(R.layout.activity_cadastro_raca);
         setTitle("Cadastro raça");
 
-        listaRaca = (List<String>) getIntent().
+        listaRaca = (List<Pet>) getIntent().
                 getSerializableExtra("lista_raca");
 
     }
@@ -34,15 +34,12 @@ public class CadastroRacaActivity extends AppCompatActivity {
 
 
         if(racaString.equals("")){
-            Toast.makeText(this,"favor digitar algum valor",
-                            Toast.LENGTH_LONG)
+            Toast.makeText(this,"favor digitar algum valor",Toast.LENGTH_LONG)
                     .show();
             return;
         }
         if(racaString.length() <= 2){
-            Toast.makeText(this,"nome tem que ter mais de 3 char",
-                            Toast.LENGTH_LONG)
-                    .show();
+            Toast.makeText(this,"nome tem que ter mais de 3 char",Toast.LENGTH_LONG).show();
             return;
         }
         Boolean checkracas = db_racas.checkracas(racaString);
